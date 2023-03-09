@@ -27,16 +27,14 @@ app.post('/callback', line.middleware(config), (req, res) => {
       res.status(500).end();
     });
 });
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
 const openai = new OpenAIApi(configuration);
 // event handler
-async function handleEvent(event) {
-  if (event.type !== 'message' || event.message.type !== 'text') {
-    // ignore non-text-message event
-    return Promise.resolve(null);
-  }
+
 async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     // ignore non-text-message event
@@ -51,11 +49,6 @@ async function handleEvent(event) {
 
   // create a echoing text message
   const echo = { type: 'text', text: completion.data.choices[0].text.trim() };
-
-  // use reply API
-  return client.replyMessage(event.replyToken, echo);
-}
-
 
   // use reply API
   return client.replyMessage(event.replyToken, echo);
